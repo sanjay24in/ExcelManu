@@ -33,8 +33,7 @@ public class Xmlreader {
 			String filepath = FILE_NAME;
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-			Document doc = docBuilder.parse(filepath);
-			Node fstChldNd = doc.getFirstChild();
+			Document doc = docBuilder.parse(filepath);			
 			//Node name below which to add
 			Node nodeNameNd = doc.getElementsByTagName(nodeName).item(0);
 
@@ -43,10 +42,6 @@ public class Xmlreader {
 			tagNamElem.setTextContent(tagVal);
 			nodeNameNd.appendChild(tagNamElem);
 			
-			
-			
-			
-			
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
 			DOMSource source = new DOMSource(doc);
@@ -54,8 +49,9 @@ public class Xmlreader {
 			transformer.transform(source, result);
 
 			System.out.println("Done");
-			System.out.println("Updated xml is below: \n"+doc.toString());
-
+			System.out.println("Updated xml is below: \n"+transformer.toString());
+			
+			
 		} catch (ParserConfigurationException pce) {
 			pce.printStackTrace();
 			return false;

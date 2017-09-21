@@ -19,6 +19,6 @@ public class App
         
         System.out.println("Adding data in xml");
         Xmlreader readWriteXml = new Xmlreader();
-        readWriteXml.appendXMLTg("Start-Date","2017-09-21","company");
+        readWriteXml.appendXMLTg("Start-Date","2017-09-21","staff");
     }	
 }

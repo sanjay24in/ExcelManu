@@ -12,6 +12,13 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import org.xml.sax.SAXException;
 
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.File;
+
 /**
  * @author Abhishek
  *
@@ -27,14 +34,26 @@ public class Xmlreader {
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 			Document doc = docBuilder.parse(filepath);
+			Node fstChldNd = doc.getFirstChild();
 			//Node name below which to add
 			Node nodeNameNd = doc.getElementsByTagName(nodeName).item(0);
 
 			Element tagNamElem = doc.createElement(tagNamStr);
-			tagNamElem.appendChild(doc.createTextNode(tagVal));
+			//tagNamElem.appendChild(doc.createTextNode(tagVal));
+			tagNamElem.setTextContent(tagVal);
 			nodeNameNd.appendChild(tagNamElem);
 			
 			
+			
+			
+			
+			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+			Transformer transformer = transformerFactory.newTransformer();
+			DOMSource source = new DOMSource(doc);
+			StreamResult result = new StreamResult(new File(filepath));
+			transformer.transform(source, result);
+
+			System.out.println("Done");
 			System.out.println("Updated xml is below: \n"+doc.toString());
 
 		} catch (ParserConfigurationException pce) {
@@ -46,7 +65,9 @@ public class Xmlreader {
 		} catch (SAXException sae) {			
 			sae.printStackTrace();
 			return false;
-		} catch (Exception exe) {
+		}	catch (TransformerException tfe) {
+			tfe.printStackTrace();
+		}  catch (Exception exe) {
 			exe.printStackTrace();
 			return false;
 		}
